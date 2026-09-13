@@ -2,10 +2,12 @@ import express from "express";
 import "dotenv/config";
 import { AppDataSource } from "./database/data-source";
 import { authRoutes } from "./routes/auth.routes";
+import { errorMiddleware } from "./middlewares/errorMiddleware";
 
 const app = express();
 app.use(express.json());
 app.use("/auth", authRoutes);
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 3000;
 
