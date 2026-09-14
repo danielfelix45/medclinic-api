@@ -1,4 +1,4 @@
-import { sign, SignOptions } from "jsonwebtoken";
+import { gerarToken } from "../utils/jwt";
 import { compare } from "bcryptjs";
 import { LoginDTO } from "../dtos/LoginDTO";
 import { UserRepository } from "../repositories/UserRepository";
@@ -20,17 +20,9 @@ export class LoginService {
       throw new AppError("Email or password is incorrect", 401);
     }
 
-    const jwtSecret = process.env.JWT_SECRET;
-
-    if (!jwtSecret) {
-      throw new AppError("JWT secret is not defined", 500);
-    }
-
-    const expiresIn = process.env.JWT_EXPIRES_IN as SignOptions["expiresIn"];
-
-    const token = sign({ id: user.id, role: user.role }, jwtSecret, {
-      subject: user.id,
-      expiresIn,
+    const token = gerarToken({
+      id: user.id,
+      role: user.role,
     });
 
     return token;
