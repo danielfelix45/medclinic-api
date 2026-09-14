@@ -1,14 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/AppError";
-import { verificarToken, TokenPayload } from "../utils/jwt";
-
-declare global {
-  namespace Express {
-    interface Request {
-      usuario?: TokenPayload;
-    }
-  }
-}
+import { verificarToken } from "../utils/jwt";
 
 export function authMiddleware(
   request: Request,
