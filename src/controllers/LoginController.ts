@@ -1,14 +1,22 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { LoginService } from "../services/LoginService";
 
 export class LoginController {
-  async handle(request: Request, response: Response): Promise<Response> {
-    const { email, password } = request.body;
+  async handle(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
+    try {
+      const { email, password } = request.body;
 
-    const loginService = new LoginService();
+      const loginService = new LoginService();
 
-    const token = await loginService.execute({ email, password });
+      const token = await loginService.execute({ email, password });
 
-    return response.json({ token });
+      return response.json({ token });
+    } catch (error) {
+      next(error);
+    }
   }
 }
